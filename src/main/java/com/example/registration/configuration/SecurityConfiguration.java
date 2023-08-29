@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/registration").permitAll();
-                    auth.requestMatchers("/login").permitAll()
+                    auth.requestMatchers("/logging-in").permitAll()
                             .anyRequest()
                             .authenticated();
                 })
@@ -40,23 +40,5 @@ public class SecurityConfiguration {
                 .build();
 
     }
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .authorizeHttpRequests(auth -> {
-//                    auth.requestMatchers("/api/v1/auth/**").permitAll();
-//                    auth.anyRequest().authenticated();
-//                })
-//                .sessionManagement(session -> {
-//                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//                })
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .oauth2Login(withDefaults())
-//                .formLogin(withDefaults())
-//                .build();
-//    }
-
 
 }

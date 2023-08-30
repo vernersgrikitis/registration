@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
@@ -32,7 +30,7 @@ public class UserController {
     public String updateUserAvatar(@AuthenticationPrincipal UserDetails userDetails,
                                    @RequestBody String avatarUrl) {
         userService.updateUserAvatar(userDetails, avatarUrl);
-        return avatarUrl;
+        return "Avatar updated successfully with URL " + avatarUrl;
     }
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)

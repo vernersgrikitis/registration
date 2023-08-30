@@ -1,4 +1,4 @@
-package user;
+package com.example.registration.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,13 +24,14 @@ public class User implements UserDetails {
     @Id
     private String email;
     private String password;
-    private String nickname;
-    private String phoneNumber;
     private String firstName;
     private String lastName;
-    private Gender gender;
     private LocalDateTime created;
+    private String avatarUrl;
     private Role role;
+    private String nickname;
+    private String phoneNumber;
+    private Gender gender;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

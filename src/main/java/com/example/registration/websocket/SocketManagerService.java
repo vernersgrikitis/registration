@@ -11,14 +11,6 @@ public class SocketManagerService {
 
     private Map<String, Socket> userSocketMap = new ConcurrentHashMap<>();
 
-    public void addUserSocket(String username, Socket socket) {
-        userSocketMap.put(username, socket);
-    }
-
-    public Socket getUserSocket(String username) {
-        return userSocketMap.get(username);
-    }
-
     public void closeUserSocket(String username) throws IOException {
         Socket socket = userSocketMap.get(username);
         if (socket != null && !socket.isClosed()) {
@@ -27,7 +19,6 @@ public class SocketManagerService {
         userSocketMap.remove(username);
     }
 
-    public boolean hasUserSocket(String username) {
-        return userSocketMap.containsKey(username);
-    }
+
+
 }

@@ -22,8 +22,7 @@ public class WebsocketEventListener {
     public void handleAvatarUpdate(CustomUpdateEvent event) {
         String user = event.getUsername();
         String avatarUrl = event.getEvent();
-
-        messagingTemplate.convertAndSendToUser(user, "/queue/avatar-update",
+        messagingTemplate.convertAndSendToUser(user, "/topic/avatar-update",
                 "Avatar updated successfully with URL " + avatarUrl);
     }
 

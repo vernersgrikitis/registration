@@ -26,6 +26,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/registration").permitAll();
+                    auth.requestMatchers("/websocket-endpoint").permitAll();
                     auth.requestMatchers("/logging-in").permitAll()
                             .anyRequest()
                             .authenticated();

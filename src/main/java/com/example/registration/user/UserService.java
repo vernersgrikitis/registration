@@ -2,7 +2,6 @@ package com.example.registration.user;
 
 import com.example.registration.events.CustomUpdateEvent;
 import com.example.registration.events.UserDeletedEvent;
-import com.example.registration.websocket.WebsocketEventListener;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

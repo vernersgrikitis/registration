@@ -4,12 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.socket.messaging.StompSubProtocolHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +29,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(webSocketRequestMatcher()).permitAll();
                     auth.requestMatchers("/registration").permitAll();
                     auth.requestMatchers("/logging-in").permitAll()
                             .anyRequest()
@@ -33,10 +38,20 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider)
                 .build();
 
     }
+
+    @Bean
+    public RequestMatcher webSocketRequestMatcher() {
+        return new AntPathRequestMatcher("/websocket/**");
+    }
+
+//    @Bean
+//    public StompSubProtocolHandler stompSubProtocolHandler() {
+//        return new StompSubProtocolHandler();
+//    }
 
 }

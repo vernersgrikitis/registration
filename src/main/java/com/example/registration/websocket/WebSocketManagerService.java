@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class SocketManagerService {
+public class WebSocketManagerService {
 
     private Map<String, Socket> userSocketMap = new ConcurrentHashMap<>();
 

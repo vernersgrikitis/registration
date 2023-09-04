@@ -5,9 +5,8 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Message {
+public class Greeting {
 
     private String content;
-    private String userToSend;
+
 }

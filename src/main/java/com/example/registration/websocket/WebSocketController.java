@@ -1,16 +1,16 @@
 package com.example.registration.websocket;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.WebSocketMessage;
 
 @Controller
-public class SocketController {
+public class WebSocketController {
 
-    @MessageMapping("/message")
-    @SendTo("/topic/public")
-    public  Message sendMessage(@Payload Message message){
+    @MessageMapping("/chat")
+    @SendTo("/topic/messages")
+    public WebSocketMessage handleMessage(WebSocketMessage message) {
         return message;
     }
 

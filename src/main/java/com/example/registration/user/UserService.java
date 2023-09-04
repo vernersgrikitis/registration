@@ -33,7 +33,6 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with " + email + " not found!"));
     }
 
-
     public void updateUserAvatar(UserDetails userDetails, String avatarUrl) {
         final String email = userDetails.getUsername();
         User currentUser = findUserByEmail(email);

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,16 +30,16 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(webSocketRequestMatcher()).permitAll();
-                    auth.requestMatchers("/registration/**").permitAll();
-                    auth.requestMatchers("/logging-in/**").permitAll()
+                    auth.requestMatchers("/registration").permitAll();
+                    auth.requestMatchers("/logging-in").permitAll()
                             .anyRequest()
                             .authenticated();
                 })
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider)
                 .build();
 
     }
@@ -48,9 +49,9 @@ public class SecurityConfiguration {
         return new AntPathRequestMatcher("/websocket/**");
     }
 
-    @Bean
-    public StompSubProtocolHandler stompSubProtocolHandler() {
-        return new StompSubProtocolHandler();
-    }
+//    @Bean
+//    public StompSubProtocolHandler stompSubProtocolHandler() {
+//        return new StompSubProtocolHandler();
+//    }
 
 }

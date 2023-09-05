@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +22,9 @@ public class UserService {
     private final ApplicationEventPublisher eventPublisher;
 
     public void save(User user) {
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        boolean existEmail = userRepository.existsUsersByEmail(user.getEmail());
+
+        if (existEmail) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "User with " + user.getEmail() + " is already registered");
         }

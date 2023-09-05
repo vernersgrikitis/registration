@@ -3,20 +3,21 @@ package com.example.registration.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.messaging.access.intercept.MessageMatcherDelegatingAuthorizationManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.socket.messaging.StompSubProtocolHandler;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebSocketSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -29,7 +30,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(webSocketRequestMatcher()).permitAll();
+                    auth.requestMatchers("/myHandler").permitAll();
                     auth.requestMatchers("/registration").permitAll();
                     auth.requestMatchers("/logging-in").permitAll()
                             .anyRequest()
@@ -44,14 +45,13 @@ public class SecurityConfiguration {
 
     }
 
-    @Bean
-    public RequestMatcher webSocketRequestMatcher() {
-        return new AntPathRequestMatcher("/websocket/**");
-    }
-
 //    @Bean
-//    public StompSubProtocolHandler stompSubProtocolHandler() {
-//        return new StompSubProtocolHandler();
+//    public AuthorizationManager<Message<?>> messageAuthorizationManager(
+//            MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+//        return messages
+//                .anyMessage()
+//                .permitAll()
+//                .build();
 //    }
 
 }

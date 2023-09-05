@@ -177,6 +177,5 @@ class UserServiceTest {
         verify(userRepository, times(1)).save(user);
         verify(eventPublisher, times(1)).publishEvent(any(CustomUpdateEvent.class));
 
-
     }
 }

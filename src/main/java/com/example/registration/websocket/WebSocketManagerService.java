@@ -19,6 +19,4 @@ public class WebSocketManagerService {
         userSocketMap.remove(username);
     }
 
-
-
 }

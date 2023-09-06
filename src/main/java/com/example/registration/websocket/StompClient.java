@@ -24,7 +24,7 @@ public class StompClient {
 
         WebSocketHttpHeaders handshakeHeaders = new WebSocketHttpHeaders();
         handshakeHeaders.add("Authorization",
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2ZXJuZXJzc0BnbWFpbC5jb20iLCJpYXQiOjE2OTM4NTQ5ODcsImV4cCI6MTY5Mzg1Njc4N30.6DirfYIz8c7dOA7KcO7nLrsuDsOM9emq4uiOD70l8FU");
+                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2ZXJuZXJzc0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwMDg0MzAsImV4cCI6MTY5NDAxMDIzMH0.mgEAsQf4XcPRG0A6nRJG-DoTmKWLRVQ8jreYzAHZ1V");
         var future = stompClient.connectAsync(URL, handshakeHeaders, sessionHandler);
         future.get();
 

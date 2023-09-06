@@ -14,16 +14,16 @@ import java.io.IOException;
 public class WebsocketEventListener {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final WebSocketManagerService webSocketManagerService;
 
     @EventListener
     public void handleAvatarUpdate(CustomUpdateEvent event) {
         String avatarUrl = event.getEvent();
         messagingTemplate.convertAndSend("/secured/avatar/" + event.getUsername(), "Avatar updated successfully with URL " + avatarUrl);
     }
-    @EventListener
-    public void handleUserDeletedEvent(UserDeletedEvent event) throws IOException {
-        UserDetails userDetails = event.getUserDetails();
-        webSocketManagerService.closeUserSocket(userDetails.getUsername());
-    }
+
+//    @EventListener
+//    public void handleUserDeletedEvent(UserDeletedEvent event) throws IOException {
+//        UserDetails userDetails = event.getUserDetails();
+//        userDetails.closeUserSocket(userDetails.getUsername());
+//    }
 }

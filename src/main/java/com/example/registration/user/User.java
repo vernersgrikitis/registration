@@ -1,14 +1,12 @@
 package com.example.registration.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -27,7 +25,7 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     private LocalDateTime created;
-    private String avatarUrl;
+    private Image image;
     private Role role;
     private String nickname;
     private String phoneNumber;

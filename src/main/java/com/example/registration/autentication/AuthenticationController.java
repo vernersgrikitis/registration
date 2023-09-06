@@ -15,7 +15,7 @@ public class AuthenticationController {
         authenticationService.register(request);
     }
 
-    @PostMapping("/logging-in")
+    @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
         return authenticationService.authenticate(request);
     }

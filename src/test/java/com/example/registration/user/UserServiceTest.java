@@ -3,22 +3,16 @@ package com.example.registration.user;
 import com.example.registration.events.CustomUpdateEvent;
 import com.example.registration.events.UserDeletedEvent;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -100,8 +94,6 @@ class UserServiceTest {
         assertThatThrownBy(() -> testService.save(userWithSameEmail))
                 .isInstanceOf(ResponseStatusException.class)
                 .hasMessageContaining("User with " + userWithSameEmail.getEmail() + " is already registered");
-
-
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.registration.websocket;
+package com.example.registration.websocketstomp;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

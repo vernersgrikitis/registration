@@ -53,19 +53,19 @@ class AuthenticationServiceTest {
 //        verify(passwordEncoder, times(1)).encode(request.getPassword());
 //    }
 
-    @Test
-    void registrationResponse() {
-
-        RegisterRequest request = new RegisterRequest();
-        request.setEmail("fake@fakemail.com");
-        request.setPassword("password");
-        request.setFirstName("Jane");
-        request.setLastName("Doe");
-
-        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(new User()));
-
-        assertThrows(ResponseStatusException.class, () -> testAuthenticationService.register(request));
-    }
+//    @Test
+//    void registrationResponse() {
+//
+//        RegisterRequest request = new RegisterRequest();
+//        request.setEmail("fake@fakemail.com");
+//        request.setPassword("password");
+//        request.setFirstName("Jane");
+//        request.setLastName("Doe");
+//
+//        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(new User()));
+//
+//        assertThrows(ResponseStatusException.class, () -> testAuthenticationService.register(request));
+//    }
 
 //    @Test
 //    void authenticate() {

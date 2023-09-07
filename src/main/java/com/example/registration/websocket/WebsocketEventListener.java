@@ -22,8 +22,11 @@ public class WebsocketEventListener {
     }
 
 //    @EventListener
-//    public void handleUserDeletedEvent(UserDeletedEvent event) throws IOException {
+//    public void handleUserDeletedEvent(UserDeletedEvent event) {
 //        UserDetails userDetails = event.getUserDetails();
-//        userDetails.closeUserSocket(userDetails.getUsername());
+//        String username = userDetails.getUsername();
+//
+//        messagingTemplate.convertAndSendToUser();
+//        userDetails.closeUserSocket(username);
 //    }
 }

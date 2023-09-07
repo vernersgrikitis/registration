@@ -20,9 +20,13 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
+    @NonNull
     private String email;
+    @NonNull
     private String password;
+    @NonNull
     private String firstName;
+    @NonNull
     private String lastName;
     private LocalDateTime created;
     private Image image;

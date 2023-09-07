@@ -1,6 +1,7 @@
 package com.example.registration.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,24 +23,26 @@ public class UserController {
     @ResponseBody
     @PreAuthorize("hasAuthority(Role.USER)")
     public String currentUserName(@AuthenticationPrincipal UserDetails userDetails) {
-        return userDetails.getUsername() + " You are in secure endpoint! ";
+        String email = userDetails.getUsername();
+        User user = userService.findUserByEmail(email);
+        return userDetails.getUsername() + " You are in secure endpoint! " + user.getFirstName() + " " + user.getLastName();
     }
 
     @RequestMapping(value = "/add-image", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority(Role.USER)")
-    public String updateUserAvatar(@AuthenticationPrincipal UserDetails userDetails,
-                                   @RequestParam("image") MultipartFile file) throws IOException {
-        userService.updateUserAvatar(userDetails, file);
-        return "Avatar updated successfully! ";
+    public String updateUserImage(@AuthenticationPrincipal UserDetails userDetails,
+                                  @RequestParam("image") MultipartFile file) throws IOException {
+        userService.updateUserImage(userDetails.getUsername(), file);
+        return "Image uploaded successfully: " + file.getOriginalFilename();
     }
 
     @RequestMapping(value = "/get-image", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority(Role.USER)")
-    public byte[] previewUserAvatar(@AuthenticationPrincipal UserDetails userDetails) throws DataFormatException, IOException {
+    public ResponseEntity<byte[]> previewUserImage(@AuthenticationPrincipal UserDetails userDetails) throws DataFormatException, IOException {
         String username = userDetails.getUsername();
-        return userService.getImage(username);
+        return userService.getImageByEmail(username);
     }
 
     @RequestMapping(value = "/delete-user", method = RequestMethod.DELETE)

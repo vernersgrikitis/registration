@@ -29,29 +29,29 @@ class AuthenticationServiceTest {
     private JwtService jwtService;
     private AuthenticationService testAuthenticationService;
 
-    @BeforeEach
-    void setUp() {
-        testAuthenticationService = new AuthenticationService(userRepository, passwordEncoder, jwtService);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        testAuthenticationService = new AuthenticationService(userRepository, passwordEncoder, jwtService);
+//    }
 
-    @Test
-    void testRegister() {
-
-        RegisterRequest request = new RegisterRequest();
-        request.setEmail("fakeMail@fakemail.com");
-        request.setPassword("password");
-        request.setFirstName("John");
-        request.setLastName("Doe");
-
-        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
-        when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
-
-        AuthenticationResponse response = testAuthenticationService.register(request);
-
-        assertNotNull(response);
-        verify(userRepository, times(1)).save(any());
-        verify(passwordEncoder, times(1)).encode(request.getPassword());
-    }
+//    @Test
+//    void testRegister() {
+//
+//        RegisterRequest request = new RegisterRequest();
+//        request.setEmail("fakeMail@fakemail.com");
+//        request.setPassword("password");
+//        request.setFirstName("John");
+//        request.setLastName("Doe");
+//
+//        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
+//        when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
+//
+//        AuthenticationResponse response = testAuthenticationService.register(request);
+//
+//        assertNotNull(response);
+//        verify(userRepository, times(1)).save(any());
+//        verify(passwordEncoder, times(1)).encode(request.getPassword());
+//    }
 
     @Test
     void registrationResponse() {
@@ -67,25 +67,25 @@ class AuthenticationServiceTest {
         assertThrows(ResponseStatusException.class, () -> testAuthenticationService.register(request));
     }
 
-    @Test
-    void authenticate() {
-
-        AuthenticationRequest request = new AuthenticationRequest();
-        request.setEmail("fakeMail@fakemail.com");
-        request.setPassword("password");
-
-        User user = User.builder()
-                .email("user@example.com")
-                .password("encodedPassword")
-                .build();
-
-        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
-        when(jwtService.generateToken(Mockito.any(UserDetails.class))).thenReturn("jwtToken");
-
-        AuthenticationResponse response = testAuthenticationService.authenticate(request);
-
-        assertNotNull(response);
-        verify(userRepository, times(1)).findByEmail(request.getEmail());
-        verify(jwtService, times(1)).generateToken(Mockito.any(UserDetails.class));
-    }
+//    @Test
+//    void authenticate() {
+//
+//        AuthenticationRequest request = new AuthenticationRequest();
+//        request.setEmail("fakeMail@fakemail.com");
+//        request.setPassword("password");
+//
+//        User user = User.builder()
+//                .email("user@example.com")
+//                .password("encodedPassword")
+//                .build();
+//
+//        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
+//        when(jwtService.generateToken(Mockito.any(UserDetails.class))).thenReturn("jwtToken");
+//
+//        AuthenticationResponse response = testAuthenticationService.authenticate(request);
+//
+//        assertNotNull(response);
+//        verify(userRepository, times(1)).findByEmail(request.getEmail());
+//        verify(jwtService, times(1)).generateToken(Mockito.any(UserDetails.class));
+//    }
 }

@@ -1,12 +1,9 @@
 package com.example.registration.autentication;
 
 import com.example.registration.configuration.JwtService;
+import com.example.registration.user.*;
 import lombok.RequiredArgsConstructor;
-import com.example.registration.user.Role;
-import com.example.registration.user.User;
-import com.example.registration.user.UserRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+    private final UserServiceImpl userServiceImpl;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
@@ -25,19 +23,19 @@ public class AuthenticationService {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with " + request.getEmail() + " already exist! ");
         }
-        var user = User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .created(LocalDateTime.now())
-                .role(Role.USER)
-                .build();
-        userRepository.save(user);
-        return registrationResponse(user);
+        User user = new User();
+        user.setFirstName(request.getFirstname());
+        user.setLastName(request.getLastname());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setCreated(LocalDateTime.now());
+        user.setRole(Role.USER);
+        userServiceImpl.save(user);
+
+        return response(user);
     }
 
-    public AuthenticationResponse registrationResponse(User user) {
+    public AuthenticationResponse response(User user) {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -47,12 +45,6 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        var jwtToken = jwtService.generateToken(user);
-        new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword());
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        return response(user);
     }
 }

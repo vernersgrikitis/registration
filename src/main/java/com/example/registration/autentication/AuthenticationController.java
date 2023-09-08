@@ -1,6 +1,9 @@
 package com.example.registration.autentication;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,6 +13,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/registration")
     public AuthenticationResponse register(@RequestBody RegisterRequest request) {
         return authenticationService.register(request);

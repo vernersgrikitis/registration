@@ -13,7 +13,6 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
-@Component
 public class StompClient {
 
     private static String URL = "ws://localhost:8080/secured/room";
@@ -51,7 +50,7 @@ public class StompClient {
         var future = stompClient.connectAsync(URL, handshakeHeaders, sessionHandler);
         future.get();
 
-        new Scanner(System.in).nextLine();
+//        new Scanner(System.in).nextLine();
     }
 
 }

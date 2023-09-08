@@ -1,4 +1,4 @@
-package com.example.registration.user;
+package com.example.registration.image;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

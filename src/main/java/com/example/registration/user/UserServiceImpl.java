@@ -1,6 +1,9 @@
 package com.example.registration.user;
 
-import com.example.registration.events.UserDeletedEvent;
+import com.example.registration.websocketevents.CustomUpdateEvent;
+import com.example.registration.websocketevents.UserDeletedEvent;
+import com.example.registration.image.Image;
+import com.example.registration.image.ImageUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -43,14 +46,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(UserDetails userDetails) {
-        final String email = userDetails.getUsername();
+        String email = userDetails.getUsername();
         userRepository.deleteUserByEmail(email);
-        eventPublisher.publishEvent(new UserDeletedEvent(this, userDetails));
 
+        eventPublisher.publishEvent(new UserDeletedEvent(this, userDetails));
     }
 
     public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with " + email + " not found!"));
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User with " + email + " not found!"));
     }
 
     @Override
@@ -66,6 +71,8 @@ public class UserServiceImpl implements UserService {
                 .image(ImageUtility.compressImage(file.getBytes())).build());
         userRepository.save(currentUser);
 
+        eventPublisher.publishEvent(new CustomUpdateEvent(
+                this, currentUser.getUsername(), file.getOriginalFilename()));
     }
 
     @Override
@@ -79,5 +86,19 @@ public class UserServiceImpl implements UserService {
                     .body(ImageUtility.decompressImage(user.getImage().getImage()));
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "File not found! ");
+    }
+
+    @Override
+    public void deleteUserImage(UserDetails userDetails) {
+        Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
+        User currentUser = new User();
+        if (optionalUser.isPresent()) {
+            currentUser = optionalUser.get();
+        }
+        currentUser.setImage(null);
+        userRepository.save(currentUser);
+
+        eventPublisher.publishEvent(new CustomUpdateEvent(
+                this, userDetails.getUsername(), "User image is deleted!"));
     }
 }

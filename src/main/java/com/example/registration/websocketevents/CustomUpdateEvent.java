@@ -1,4 +1,4 @@
-package com.example.registration.events;
+package com.example.registration.websocketevents;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

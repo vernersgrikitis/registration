@@ -1,6 +1,9 @@
 package com.example.registration.user;
 
-import com.example.registration.events.UserDeletedEvent;
+import com.example.registration.enums.Gender;
+import com.example.registration.enums.Role;
+import com.example.registration.websocketevents.UserDeletedEvent;
+import com.example.registration.image.Image;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

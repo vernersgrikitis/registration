@@ -1,6 +1,7 @@
 package com.example.registration.autentication;
 
 import com.example.registration.configuration.JwtService;
+import com.example.registration.enums.Role;
 import com.example.registration.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

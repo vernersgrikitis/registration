@@ -21,10 +21,12 @@ public class UserController {
     @RequestMapping(value = "/secure-endpoint", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority(Role.USER)")
-    public String currentUserName(@AuthenticationPrincipal UserDetails userDetails) {
+    public String currentUserName(@AuthenticationPrincipal
+                                      UserDetails userDetails) {
         String email = userDetails.getUsername();
         User user = userService.findUserByEmail(email);
-        return userDetails.getUsername() + " You are in secure endpoint! " + user.getFirstName() + " " + user.getLastName();
+        return userDetails.getUsername() + " You are in secure endpoint! " +
+                user.getFirstName() + " " + user.getLastName();
     }
 
     @RequestMapping(value = "/add-image", method = RequestMethod.POST)
@@ -39,16 +41,27 @@ public class UserController {
     @RequestMapping(value = "/get-image", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority(Role.USER)")
-    public ResponseEntity<byte[]> previewUserImage(@AuthenticationPrincipal UserDetails userDetails) throws DataFormatException, IOException {
+    public ResponseEntity<byte[]> previewUserImage(@AuthenticationPrincipal
+                                                       UserDetails userDetails) throws DataFormatException, IOException {
         String username = userDetails.getUsername();
         return userService.getImageByEmail(username);
+    }
+
+    @RequestMapping(value = "/delete-image", method = RequestMethod.DELETE)
+    @ResponseBody
+    @PreAuthorize("hasAuthority(Role.USER)")
+    public String deleteImage(@AuthenticationPrincipal UserDetails userDetails) {
+        userService.deleteUserImage(userDetails);
+        return "User image deletion was successfully!";
     }
 
     @RequestMapping(value = "/delete-user", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasAuthority(Role.USER)")
-    public String deleteUser(@AuthenticationPrincipal UserDetails userDetails) {
+    public String deleteUser(@AuthenticationPrincipal
+                                 UserDetails userDetails) {
         userService.deleteUser(userDetails);
-        return "User deleted successfully! ";
+        return "User deleted was successfully! ";
     }
+
 }

@@ -49,7 +49,7 @@ public class StompClient {
         var future = stompClient.connectAsync(URL, handshakeHeaders, sessionHandler);
         future.get();
 
-//        new Scanner(System.in).nextLine();
+        new Scanner(System.in).nextLine();
     }
 
 }

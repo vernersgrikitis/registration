@@ -1,4 +1,4 @@
-package com.example.registration.user;
+package com.example.registration.enums;
 
 public enum Gender {
 

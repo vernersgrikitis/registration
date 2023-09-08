@@ -4,7 +4,6 @@ import com.example.registration.autentication.AuthenticationRequest;
 import com.example.registration.autentication.AuthenticationResponse;
 import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.WebSocketClient;

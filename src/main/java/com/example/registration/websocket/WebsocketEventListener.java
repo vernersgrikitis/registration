@@ -5,7 +5,7 @@ import com.example.registration.websocketevents.UserDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,5 +29,6 @@ public class WebsocketEventListener {
                 "/secured/avatar/" + event.getUserDetails().getUsername(),
                 "User deleted successfully! ");
 
+        SecurityContextHolder.clearContext();
     }
 }

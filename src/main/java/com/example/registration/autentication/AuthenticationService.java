@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
@@ -29,7 +29,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setCreated(LocalDateTime.now());
         user.setRole(Role.USER);
-        userServiceImpl.save(user);
+        userService.save(user);
 
         return response(user);
     }

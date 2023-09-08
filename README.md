@@ -1,3 +1,9 @@
+
+![endpointi](https://github.com/vernersgrikitis/registration/assets/127933614/4f082de1-120d-4631-8f4f-638cc185b2d3)
+
+
+
+
 # Elegant Enrollment Enactment System
 
 ## An Exceptional RESTful API Realized with Cutting-Edge Technology
@@ -5,6 +11,8 @@
 ### Technological Components Used: 
 
 - Spring Boot: The robust foundation upon which our application is built, ensuring unparalleled performance and scalability.
+  
+- Maven Build Management: Leveraging Maven for efficient dependency management and project build processes, ensuring a streamlined development workflow.
 
 - Lombok: Employing the magic of Lombok to streamline and simplify Java code, enhancing maintainability and readability.
 

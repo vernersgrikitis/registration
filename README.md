@@ -1,16 +1,44 @@
-##RegistrationApp
+# RegistrationApplication
 
-RegistrationApp is a simple Spring Boot application that provides user registration and authentication services using MongoDB as the database and Spring Security with JWT (JSON Web Tokens) for securing endpoints.
+## RESTful API
 
-##Features
-User registration with email and password.
-User authentication using JWT.
-Secure RESTful API endpoints for user management.
+### Technology used: 
 
-##Technologies Used
-Java
-Spring Boot
-Lombok
-MongoDB
-Spring Security
-JWT (JSON Web Tokens)
+- Spring Boot
+
+- Lombok
+
+- Docker
+
+- MongoDB
+
+- Websocket
+
+- Stomp
+
+- Swagger documentation
+
+- JWT Security
+
+- Postman,
+
+- Unit tests
+
+### You can:
+
+- Register(with firstname, lastname, email, password).
+
+- Login (with email and password)
+
+- Authorize with a token which you can get by Register or Login
+
+- Add image 
+
+- Get an image
+
+- Delete image
+
+- Delete your profile
+
+- You can run a custom StompClient, connect to a server and get notice messages about changes you make. 
+

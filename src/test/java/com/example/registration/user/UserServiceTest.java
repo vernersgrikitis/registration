@@ -1,7 +1,9 @@
 package com.example.registration.user;
 
-import com.example.registration.events.CustomUpdateEvent;
-import com.example.registration.events.UserDeletedEvent;
+import com.example.registration.enums.Gender;
+import com.example.registration.enums.Role;
+import com.example.registration.websocketevents.UserDeletedEvent;
+import com.example.registration.image.Image;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,8 +12,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.server.ResponseStatusException;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -28,29 +36,32 @@ class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private ApplicationEventPublisher eventPublisher;
-    private UserService testService;
+    private UserServiceImpl testService;
 
 
     @BeforeEach
     void setUp() {
-        testService = new UserService(userRepository, eventPublisher);
+        testService = new UserServiceImpl(userRepository, eventPublisher);
     }
 
     @Test
-    void getAllUsers() {
-        testService.getAllUsers();
-        verify(userRepository).findAll();
-    }
+    void shouldSave() throws IOException {
 
-    @Test
-    void save() {
+        var imageFile = new ClassPathResource("image/catimage.jpg");
+        byte[] bytes = StreamUtils.copyToByteArray(imageFile.getInputStream());
+
+        Image image = new Image();
+        image.setName("catimage.jpg");
+        image.setType("image/jpeg");
+        image.setImage(bytes);
+
         User userToSave = new User(
                 "samemail@mail.com",
                 "password",
                 "John",
                 "Doe",
                 LocalDateTime.of(2012,12, 12, 12, 12),
-                "https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcRRv9ICxXjK-LVFv-lKRId6gB45BFoNCLsZ4dk7bZpYGblPLPG-9aYss0Z0wt2PmWDb",
+                image,
                 Role.USER,
                 "fakeNickName",
                 "+123456789010121314",
@@ -69,11 +80,36 @@ class UserServiceTest {
         assertThat(capturedUser.getFirstName()).isEqualTo(userToSave.getFirstName());
         assertThat(capturedUser.getLastName()).isEqualTo(userToSave.getLastName());
         assertThat(capturedUser.getCreated()).isEqualTo(userToSave.getCreated());
-        assertThat(capturedUser.getAvatarUrl()).isEqualTo(userToSave.getAvatarUrl());
+        assertThat(capturedUser.getImage()).isEqualTo(userToSave.getImage());
         assertThat(capturedUser.getRole()).isEqualTo(userToSave.getRole());
         assertThat(capturedUser.getNickname()).isEqualTo(userToSave.getNickname());
         assertThat(capturedUser.getPhoneNumber()).isEqualTo(userToSave.getPhoneNumber());
         assertThat(capturedUser.getGender()).isEqualTo(userToSave.getGender());
+    }
+
+    @Test
+    public void testValidEmail() {
+        User user = new User();
+        user.setEmail("valid@example.com");
+
+        when(userRepository.existsUsersByEmail(user.getEmail())).thenReturn(false);
+
+        testService.save(user);
+
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void testInvalidEmail() {
+        User user = new User();
+        user.setEmail("invalid-email");
+
+        try {
+            testService.save(user);
+        } catch (ResponseStatusException ex) {
+            assert ex.getStatusCode() == HttpStatus.BAD_REQUEST;
+            assert ex.getReason().contains("Invalid email format");
+        }
     }
 
     @Test
@@ -100,7 +136,7 @@ class UserServiceTest {
     @Test
     void shouldDeleteUser() {
 
-        String email = "user@example.com";
+        String email = "user@user.com";
 
         User user = new User();
         user.setEmail(email);
@@ -114,17 +150,13 @@ class UserServiceTest {
     @Test
     void shouldFindUserByEmail() {
 
-        User user = new User(
-                "samemail@mail.com",
-                "password",
-                "John",
-                "Doe",
-                LocalDateTime.of(2012,12, 12, 12, 12),
-                "https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcRRv9ICxXjK-LVFv-lKRId6gB45BFoNCLsZ4dk7bZpYGblPLPG-9aYss0Z0wt2PmWDb",
-                Role.USER,
-                "fakeNickName",
-                "+123456789010121314",
-                Gender.MALE);
+        User user = new User();
+        user.setRole(Role.USER);
+        user.setEmail("samemail@mail.com");
+        user.setPassword("password");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
         User foundUser = testService.findUserByEmail(user.getEmail());
@@ -137,37 +169,41 @@ class UserServiceTest {
     @Test
     void shouldNotFoundUserNonExistingEmail() {
 
-        String email = "notexisting@example.com";
+        String email = "notexisting@mail.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> testService.findUserByEmail(email));
     }
 
     @Test
+    public void shouldUpdateUserImage() throws IOException {
 
-    void updateUserAvatar() {
+        String username = "user@user.com";
 
-        User user = new User(
-                "samemail@mail.com",
-                "password",
-                "John",
-                "Doe",
-                LocalDateTime.of(2012,12, 12, 12, 12),
-                "https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcRRv9ICxXjK-LVFv-lKRId6gB45BFoNCLsZ4dk7bZpYGblPLPG-9aYss0Z0wt2PmWDb",
-                Role.USER,
-                "fakeNickName",
-                "+123456789010121314",
-                Gender.MALE);
+        var imageFile = new ClassPathResource("image/catimage.jpg");
+        String content = "catimage";
+        byte[] bytes = StreamUtils.copyToByteArray(imageFile.getInputStream());
 
-        String avatarUrl = "https://mymodernmet.com/wp/wp-content/uploads/archive/5LJIaEyCgXUHj3RMK6qp_robertsijka1.jpg";
+        MockMultipartFile file = new MockMultipartFile(content, bytes);
 
-        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        Optional<User> optionalUser = Optional.of(new User());
 
-        testService.updateUserAvatar(user, avatarUrl);
+        when(userRepository.findByEmail(username)).thenReturn(optionalUser);
 
-        assertEquals(avatarUrl, user.getAvatarUrl());
-        verify(userRepository, times(1)).save(user);
-        verify(eventPublisher, times(1)).publishEvent(any(CustomUpdateEvent.class));
+        testService.updateUserImage(username, file);
+
+        verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    public void shouldNotGetImageByEmailWhenImageDoesNotExist() {
+
+        String email = "none@none.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        NoSuchElementException exception = assertThrows(
+                NoSuchElementException.class, () -> testService.getImageByEmail(email));
 
     }
+
 }

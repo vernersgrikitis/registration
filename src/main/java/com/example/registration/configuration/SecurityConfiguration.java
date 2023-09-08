@@ -7,14 +7,12 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableWebSocketSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -27,9 +25,20 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/myHandler").permitAll();
+                    auth.requestMatchers("/swagger-ui.html",
+                            "/swagger-ui/**",
+                            "/v2/api-docs",
+                            "/v3/api-docs",
+                            "/v3/api-docs/**",
+                            "/swagger-resources",
+                            "/swagger-resources/**",
+                            "/configuration/ui",
+                            "/configuration/security",
+                            "/webjars/**").permitAll();
+                    auth.requestMatchers("/secured").permitAll();
+                    auth.requestMatchers("/secured/**").permitAll();
                     auth.requestMatchers("/registration").permitAll();
-                    auth.requestMatchers("/logging-in").permitAll()
+                    auth.requestMatchers("/login").permitAll()
                             .anyRequest()
                             .authenticated();
                 })

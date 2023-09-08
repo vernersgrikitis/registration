@@ -1,15 +1,14 @@
 package com.example.registration.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.registration.enums.Gender;
+import com.example.registration.enums.Role;
+import com.example.registration.image.Image;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -22,12 +21,16 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
+    @NonNull
     private String email;
+    @NonNull
     private String password;
+    @NonNull
     private String firstName;
+    @NonNull
     private String lastName;
     private LocalDateTime created;
-    private String avatarUrl;
+    private Image image;
     private Role role;
     private String nickname;
     private String phoneNumber;

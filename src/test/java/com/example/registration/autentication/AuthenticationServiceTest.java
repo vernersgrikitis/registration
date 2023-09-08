@@ -3,6 +3,7 @@ package com.example.registration.autentication;
 import com.example.registration.configuration.JwtService;
 import com.example.registration.user.User;
 import com.example.registration.user.UserRepository;
+import com.example.registration.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,11 +28,13 @@ class AuthenticationServiceTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private JwtService jwtService;
+    @Mock
+    private UserService userService;
     private AuthenticationService testAuthenticationService;
 
     @BeforeEach
     void setUp() {
-        testAuthenticationService = new AuthenticationService(userRepository, passwordEncoder, jwtService);
+        testAuthenticationService = new AuthenticationService(userRepository, userService, passwordEncoder, jwtService);
     }
 
     @Test
@@ -40,8 +43,8 @@ class AuthenticationServiceTest {
         RegisterRequest request = new RegisterRequest();
         request.setEmail("fakeMail@fakemail.com");
         request.setPassword("password");
-        request.setFirstName("John");
-        request.setLastName("Doe");
+        request.setFirstname("John");
+        request.setLastname("Doe");
 
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
@@ -49,7 +52,6 @@ class AuthenticationServiceTest {
         AuthenticationResponse response = testAuthenticationService.register(request);
 
         assertNotNull(response);
-        verify(userRepository, times(1)).save(any());
         verify(passwordEncoder, times(1)).encode(request.getPassword());
     }
 
@@ -59,8 +61,8 @@ class AuthenticationServiceTest {
         RegisterRequest request = new RegisterRequest();
         request.setEmail("fake@fakemail.com");
         request.setPassword("password");
-        request.setFirstName("Jane");
-        request.setLastName("Doe");
+        request.setFirstname("Jane");
+        request.setLastname("Doe");
 
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(new User()));
 
@@ -77,6 +79,8 @@ class AuthenticationServiceTest {
         User user = User.builder()
                 .email("user@example.com")
                 .password("encodedPassword")
+                .firstName("John")
+                .lastName("Doe")
                 .build();
 
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));

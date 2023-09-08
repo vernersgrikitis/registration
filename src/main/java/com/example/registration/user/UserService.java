@@ -1,71 +1,23 @@
 package com.example.registration.user;
 
-import com.example.registration.events.CustomUpdateEvent;
-import com.example.registration.events.UserDeletedEvent;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.util.zip.DataFormatException;
 
-@RequiredArgsConstructor
-@Component
-public class UserService {
+public interface UserService {
 
-    private final UserRepository userRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    void save(User user);
 
-    public void save(User user) {
-        boolean existEmail = userRepository.existsUsersByEmail(user.getEmail());
+    void updateUserImage(String username, MultipartFile file) throws IOException;
 
-        if (existEmail) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "User with " + user.getEmail() + " is already registered");
-        }
-        checkUserEmail(user.getEmail());
-        checkUserValues(user.getPassword());
-        checkUserValues(user.getFirstName());
-        checkUserValues(user.getLastName());
-        userRepository.save(user);
-    }
+    ResponseEntity<byte[]> getImageByEmail(String email) throws DataFormatException, IOException;
 
-    public boolean checkUserValues(String value) {
-        return value == null || value.isBlank() || value.isEmpty();
-    }
+    void deleteUser(UserDetails userDetails);
 
-    public boolean checkUserEmail(String value) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(value);
-        return matcher.matches() || value == null || value.isBlank() || value.isEmpty();
-    }
+    User findUserByEmail(String email);
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public void deleteUser(UserDetails userDetails) {
-        final String email = userDetails.getUsername();
-        userRepository.deleteUserByEmail(email);
-        eventPublisher.publishEvent(new UserDeletedEvent(this, userDetails));
-
-    }
-
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with " + email + " not found!"));
-    }
-
-    public void updateUserAvatar(UserDetails userDetails, String avatarUrl) {
-        final String email = userDetails.getUsername();
-        User currentUser = findUserByEmail(email);
-        currentUser.setAvatarUrl(avatarUrl);
-        save(currentUser);
-        eventPublisher.publishEvent(new CustomUpdateEvent(this, userDetails.getUsername(), avatarUrl));
-    }
-
+    void deleteUserImage(UserDetails userDetails);
 
 }

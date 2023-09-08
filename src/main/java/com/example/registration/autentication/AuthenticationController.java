@@ -1,6 +1,7 @@
 package com.example.registration.autentication;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,12 +11,13 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/registration")
-    public void register(@RequestBody RegisterRequest request) {
-        authenticationService.register(request);
+    public AuthenticationResponse register(@RequestBody RegisterRequest request) {
+        return authenticationService.register(request);
     }
 
-    @PostMapping("/logging-in")
+    @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
         return authenticationService.authenticate(request);
     }

@@ -1,50 +1,54 @@
+# Registration Application
+
+## Getting Started
+
+- You must have Docker installed on your PC
+
+- You can use a commandline move to directory you want to download this project and hit the command 
+git pull https://github.com/vernersgrikitis/registration.git
+then move to directory registration and
+hit "mvn clean package"
+when .jar file is created
+hit "docker-compose up --build"
+
+- Now you can use unsecured localhost:8080/registration or localhost:8080/login to login
+and get a JWT token so you are able to check if u pass the security with
+localhost:8080/user/secure-endpoint
+with a token, you can upload image localhost:8080/user/add-image where key:image and value:image.jpg <- example
+You can get an image by passing your JWT token localhost:8080/user/get-image and
+localhost:8080/user/delete-image to delete image
+localhost:8080/user/delete-user to delete user, user will be deleted and you will not be able to login and your token will be annulated!
+
+- If you have IDE installed on your PC or MAC , you can run custom StompClient.java which inside of this project, you can login in it with your registred account and observe real time events of changing or adding image or delating user via websocket connection
+
+- I use Postman to send requests to server, you can freely use software you prefer
 
 ![endpointi](https://github.com/vernersgrikitis/registration/assets/127933614/4f082de1-120d-4631-8f4f-638cc185b2d3)
 
 
+### Technology used: 
 
+- Spring Boot
+- Lombok
+- Docker
+- MongoDB
+- Websocket
+- Stomp
+- Swagger documentation
+- JWT Security
+- Postman
+- Unit tests
 
-# Elegant Enrollment Enactment System
+#### You can:
 
-## An Exceptional RESTful API Realized with Cutting-Edge Technology
+- Register(with firstname, lastname, email, password).
+- Login (with email and password)
+- Authorize with a token which you can get by Register or Login
+- Add image 
+- Get an image
+- Delete image
+- Delete your profile
+- You can run a custom StompClient, connect to a server and get notice messages about changes you make. 
+ 
 
-### Technological Components Used: 
-
-- Spring Boot: The robust foundation upon which our application is built, ensuring unparalleled performance and scalability.
-  
-- Maven Build Management: Leveraging Maven for efficient dependency management and project build processes, ensuring a streamlined development workflow.
-
-- Lombok: Employing the magic of Lombok to streamline and simplify Java code, enhancing maintainability and readability.
-
-- Docker: Embracing containerization via Docker to ensure seamless deployment and system isolation.
-
-- MongoDB: Harnessing the power of MongoDB, a NoSQL database, to store and manage data with unparalleled flexibility.
-
-- Websocket: Employing Websocket technology to establish real-time, bidirectional communication channels for dynamic interactions.
-
-- Stomp Protocol: Implementing the Stomp protocol to facilitate efficient, asynchronous communication in conjunction with Websocket.
-
-- Swagger Documentation: Leveraging Swagger for comprehensive and interactive API documentation, ensuring clarity and ease of use.
-
-- JWT Security: Employing JSON Web Tokens (JWT) to fortify the security of our application, safeguarding user data and interactions.
-
-- Unit Tests: Implementing rigorous unit testing to validate the robustness and correctness of our application.
-
-### You can:
-
-- User Registration: The ability to register with a rich set of user information, including first name, last name, email, and password, ensuring a personalized experience.
-
-- User Login: A secure login mechanism utilizing email and password credentials, providing access to the application's features.
-
-- Token-Based Authorization: Authorization facilitated through token acquisition, attainable via registration or login, ensuring controlled access to functionalities.
-
-- Image Upload: Empowering users to upload images, enabling personalized content and experiences.
-
-- Image Retrieval: Accessing uploaded images, making it effortless to view and utilize stored content.
-
-- Image Deletion: The capability to remove uploaded images, allowing for content management and cleanup.
-
-- Profile Deletion: The option to delete user profiles when needed, ensuring data privacy and management.
-
-- Real-time Notifications: Enabling custom StompClients to establish connections with the server and receive instant notifications regarding any modifications made within the system.
 

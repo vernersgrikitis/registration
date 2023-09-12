@@ -23,6 +23,8 @@ localhost:8080/user/delete-user to delete user, user will be deleted and you wil
 
 - I use Postman to send requests to server, you can freely use software you prefer
 
+## Endpoints displayed by Swagger: 
+
 ![endpointi](https://github.com/vernersgrikitis/registration/assets/127933614/4f082de1-120d-4631-8f4f-638cc185b2d3)
 
 

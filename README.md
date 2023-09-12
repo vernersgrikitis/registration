@@ -19,7 +19,7 @@ You can get an image by passing your JWT token localhost:8080/user/get-image and
 localhost:8080/user/delete-image to delete image
 localhost:8080/user/delete-user to delete user, user will be deleted and you will not be able to login and your token will be annulated!
 
-- If you have IDE installed on your PC or MAC , you can run custom StompClient.java which inside of this project, you can login in it with your registred account and observe real time events of changing or adding image or delating user via websocket connection
+- If you have IDE installed on your PC or MAC , you can run custom StompClient.java which inside of this project, you can login in it with your registred account and observe real time events via websocket connection of changing or adding image or delating user.
 
 - I use Postman to send requests to server, you can freely use software you prefer
 

@@ -5,7 +5,7 @@
 - You must have JDK 17 , Apache Maven and Docker installed on your PC to run it!
 
 - You can use a commandline move to directory you want to download this project and hit the command 
-git pull https://github.com/vernersgrikitis/registration.git
+"git pull https://github.com/vernersgrikitis/registration.git"
 then move to directory registration and
 hit "mvn clean package"
 when .jar file is created

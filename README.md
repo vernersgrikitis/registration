@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-- You must have Docker installed on your PC
+- You must have JDK 17 , Apache Maven and Docker installed on your PC to run it!
 
 - You can use a commandline move to directory you want to download this project and hit the command 
 git pull https://github.com/vernersgrikitis/registration.git

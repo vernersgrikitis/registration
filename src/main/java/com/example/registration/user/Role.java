@@ -1,4 +1,4 @@
-package com.example.registration.enums;
+package com.example.registration.user;
 
 public enum Role {
 

@@ -1,7 +1,5 @@
 package com.example.registration.user;
 
-import com.example.registration.enums.Gender;
-import com.example.registration.enums.Role;
 import com.example.registration.image.Image;
 import lombok.*;
 import org.springframework.data.annotation.Id;

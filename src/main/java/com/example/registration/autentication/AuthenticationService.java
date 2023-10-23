@@ -1,7 +1,7 @@
 package com.example.registration.autentication;
 
 import com.example.registration.configuration.JwtService;
-import com.example.registration.enums.Role;
+import com.example.registration.user.Role;
 import com.example.registration.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +45,12 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        String userPassword = user.getPassword();
+
+        if (!passwordEncoder.matches(request.getPassword(), userPassword)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password you entered is wrong");
+        }
         return response(user);
     }
 }

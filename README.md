@@ -51,6 +51,3 @@ localhost:8080/user/delete-user to delete user, user will be deleted and you wil
 - Delete image
 - Delete your profile
 - You can run a custom StompClient, connect to a server and get notice messages about changes you make. 
- 
-
-
